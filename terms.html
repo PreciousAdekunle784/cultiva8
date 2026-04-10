@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service — Cultiv8</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest: #1B4332;
+            --forest-deep: #14261E;
+            --leaf: #40916C;
+            --leaf-light: #52B788;
+            --pale: #D8F3DC;
+            --cream: #FAFAF7;
+            --black: #0A0A0A;
+            --black-soft: #1A1A18;
+            --gray: #6B7280;
+            --fd: 'Clash Display', 'Georgia', serif;
+            --fb: 'DM Sans', system-ui, sans-serif;
+            --ease: cubic-bezier(.4, 0, .2, 1)
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: var(--fb);
+            background: var(--cream);
+            color: var(--black);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased
+        }
+
+        ::selection {
+            background: var(--leaf);
+            color: #fff
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 14px 0;
+            background: rgba(250, 250, 247, .85);
+            backdrop-filter: blur(24px) saturate(1.8);
+            -webkit-backdrop-filter: blur(24px) saturate(1.8);
+            border-bottom: 1px solid rgba(27, 67, 50, .06)
+        }
+
+        .nav-in {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            text-decoration: none;
+            color: var(--forest);
+            font-family: var(--fd);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -.5px
+        }
+
+        .logo svg {
+            flex-shrink: 0
+        }
+
+        .nav-back {
+            text-decoration: none;
+            color: var(--leaf);
+            font-size: .88rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color .2s
+        }
+
+        .nav-back:hover {
+            color: var(--forest)
+        }
+
+        .hero-legal {
+            padding: 120px 0 60px;
+            text-align: center;
+            position: relative
+        }
+
+        .hero-legal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(82, 183, 136, .06) 0%, transparent 60%);
+            pointer-events: none
+        }
+
+        .hero-legal h1 {
+            font-family: var(--fd);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            color: var(--forest-deep);
+            letter-spacing: -1.5px;
+            margin-bottom: 10px
+        }
+
+        .hero-legal p {
+            color: var(--gray);
+            font-size: .95rem
+        }
+
+        .content {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 0 24px 80px
+        }
+
+        .content h2 {
+            font-family: var(--fd);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--forest-deep);
+            letter-spacing: -.5px;
+            margin: 48px 0 14px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(27, 67, 50, .06)
+        }
+
+        .content h2:first-of-type {
+            border-top: none;
+            margin-top: 0
+        }
+
+        .content h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--black-soft);
+            margin: 28px 0 8px
+        }
+
+        .content p {
+            font-size: .92rem;
+            color: var(--black-soft);
+            margin-bottom: 14px;
+            line-height: 1.8
+        }
+
+        .content ul,
+        .content ol {
+            margin: 0 0 16px 20px;
+            font-size: .92rem;
+            color: var(--black-soft)
+        }
+
+        .content li {
+            margin-bottom: 8px;
+            line-height: 1.7
+        }
+
+        .content a {
+            color: var(--leaf);
+            text-decoration: underline;
+            text-underline-offset: 2px
+        }
+
+        .content a:hover {
+            color: var(--forest)
+        }
+
+        .content strong {
+            color: var(--black);
+            font-weight: 600
+        }
+
+        .highlight-box {
+            background: var(--pale);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--leaf)
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            color: var(--forest);
+            font-weight: 500
+        }
+
+        .toc {
+            background: #fff;
+            border: 1px solid rgba(27, 67, 50, .06);
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 48px;
+            box-shadow: 0 2px 12px rgba(27, 67, 50, .03)
+        }
+
+        .toc h4 {
+            font-family: var(--fd);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--forest);
+            margin-bottom: 12px
+        }
+
+        .toc ol {
+            margin: 0 0 0 18px;
+            font-size: .88rem
+        }
+
+        .toc li {
+            margin-bottom: 6px
+        }
+
+        .toc a {
+            color: var(--leaf);
+            text-decoration: none;
+            font-weight: 500
+        }
+
+        .toc a:hover {
+            text-decoration: underline
+        }
+
+        .footer-legal {
+            padding: 40px 0;
+            border-top: 1px solid rgba(27, 67, 50, .06);
+            text-align: center
+        }
+
+        .footer-legal p {
+            font-size: .78rem;
+            color: var(--gray)
+        }
+
+        .footer-legal a {
+            color: var(--leaf);
+            text-decoration: none
+        }
+
+        .footer-legal a:hover {
+            text-decoration: underline
+        }
+
+        @media(max-width:768px) {
+            .hero-legal {
+                padding: 100px 0 40px
+            }
+
+            .content h2 {
+                font-size: 1.2rem
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="nav">
+        <div class="nav-in">
+            <a href="index.html" class="logo"><svg width="24" height="24" viewBox="0 0 64 64" fill="none">
+                    <path d="M32 8C22 8 14 20 17 30C20 40 29 48 32 52C35 48 44 40 47 30C50 20 42 8 32 8Z"
+                        fill="#40916C" />
+                    <path d="M32 20V44M24 28L32 20L40 28" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>Cultiv8</a>
+            <a href="index.html" class="nav-back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>Back to Home</a>
+        </div>
+    </nav>
+
+    <section class="hero-legal">
+        <h1>Terms of Service</h1>
+        <p>Last updated: April 8, 2026</p>
+    </section>
+
+    <div class="content">
+
+        <div class="highlight-box">
+            <p>By accessing or using Cultiv8, you agree to be bound by these Terms. If you do not agree, do not use
+                the platform. These terms are governed by the laws of the Federal Republic of Nigeria.</p>
+        </div>
+
+        <div class="toc">
+            <h4>Table of Contents</h4>
+            <ol>
+                <li><a href="#s1">Definitions</a></li>
+                <li><a href="#s2">Account Registration & Eligibility</a></li>
+                <li><a href="#s3">Platform Services</a></li>
+                <li><a href="#s4">Carbon Credit Tracking & Marketplace</a></li>
+                <li><a href="#s5">Post-Harvest Intelligence Services</a></li>
+                <li><a href="#s6">User Responsibilities & Data Accuracy</a></li>
+                <li><a href="#s7">Intellectual Property</a></li>
+                <li><a href="#s8">Disclaimers & Limitation of Liability</a></li>
+                <li><a href="#s9">Payment & Transaction Terms</a></li>
+                <li><a href="#s10">Termination</a></li>
+                <li><a href="#s11">Dispute Resolution</a></li>
+                <li><a href="#s12">Changes to These Terms</a></li>
+                <li><a href="#s13">Contact Information</a></li>
+            </ol>
+        </div>
+
+        <h2 id="s1">1. Definitions</h2>
+        <p>In these Terms of Service, the following definitions apply:</p>
+        <ul>
+            <li><strong>"Cultiv8"</strong> (also referred to as "we," "us," or "the Platform") means the web-based
+                platform operated by Cultiv8 Technologies Limited, a company registered in the Federal Republic of
+                Nigeria.</li>
+            <li><strong>"User"</strong> (also referred to as "you") means any individual, cooperative, or entity that
+                creates an account or uses the Platform's services.</li>
+            <li><strong>"Carbon Credits"</strong> means verified carbon offset certificates representing the
+                sequestration or avoidance of one metric tonne of carbon dioxide equivalent (tCO₂e), as estimated by the
+                Platform using IPCC-based methodology.</li>
+            <li><strong>"Post-Harvest Intelligence"</strong> means the spoilage prediction, weather monitoring, and
+                buyer matching services provided through the Platform.</li>
+            <li><strong>"Farm Data"</strong> means all information submitted by the User about their agricultural
+                operations, including but not limited to farm location, size, crop types, regenerative practices, and
+                storage conditions.</li>
+            <li><strong>"Buyer"</strong> means any corporate entity, aggregator, trader, or individual registered on the
+                Platform for the purpose of purchasing carbon credits or agricultural produce.</li>
+        </ul>
+
+        <h2 id="s2">2. Account Registration & Eligibility</h2>
+        <h3>2.1 Eligibility</h3>
+        <p>To use Cultiv8, you must be at least 18 years of age, or the age of legal majority in your jurisdiction,
+            and have the legal capacity to enter into a binding agreement. Agricultural cooperatives may register
+            through an authorized representative.</p>
+
+        <h3>2.2 Account Creation</h3>
+        <p>You agree to provide accurate, current, and complete information during registration, including your name,
+            phone number, farm location, and farming practices. You are responsible for maintaining the confidentiality
+            of your account credentials and for all activities conducted under your account.</p>
+
+        <h3>2.3 Verification</h3>
+        <p>Cultiv8 may require identity verification, farm ownership documentation, or cooperative registration
+            certificates before enabling certain features, including carbon credit sales and payment disbursements. We
+            reserve the right to suspend accounts pending verification.</p>
+
+        <h2 id="s3">3. Platform Services</h2>
+        <p>Cultiv8 provides the following services:</p>
+        <ul>
+            <li><strong>Carbon Sequestration Estimation:</strong> Using satellite imagery (Sentinel-2), soil data (ISRIC
+                SoilGrids), and IPCC Tier 1 emission factors to estimate the carbon sequestration potential of
+                registered farms based on reported regenerative practices.</li>
+            <li><strong>Carbon Credit Marketplace:</strong> A platform connecting farmers and cooperatives with
+                corporate buyers seeking verified carbon offset credits.</li>
+            <li><strong>Post-Harvest Spoilage Prediction:</strong> Using real-time weather data (Open-Meteo API) and
+                FAO-calibrated crop spoilage models to predict shelf life for stored agricultural produce.</li>
+            <li><strong>Buyer Matching:</strong> Connecting farmers with nearby buyers, aggregators, processors, and
+                cold storage facilities when produce is at risk of spoilage.</li>
+            <li><strong>Weather Intelligence:</strong> Providing hyperlocal weather forecasts relevant to storage
+                conditions and agricultural planning.</li>
+        </ul>
+        <p>All services are provided on an "as-is" basis. While we strive for accuracy, the Platform's estimates,
+            predictions, and recommendations are based on models and publicly available data and should not be treated
+            as guarantees.</p>
+
+        <h2 id="s4">4. Carbon Credit Tracking & Marketplace</h2>
+        <h3>4.1 Carbon Estimation Methodology</h3>
+        <p>Cultiv8 estimates carbon sequestration using IPCC Tier 1 default emission factors combined with
+            satellite-derived NDVI (Normalized Difference Vegetation Index) analysis. These estimates are approximations
+            and may differ from values obtained through physical soil sampling or higher-tier methodologies.</p>
+
+        <h3>4.2 Verification Standards</h3>
+        <p>Cultiv8 aims to align carbon credit verification with internationally recognized standards including Verra
+            VCS (Verified Carbon Standard) and Gold Standard. However, until credits receive formal third-party
+            verification, they are classified as "estimated credits" and may not carry the same market value as fully
+            certified offsets.</p>
+
+        <h3>4.3 Marketplace Transactions</h3>
+        <p>When you list carbon credits on the Cultiv8 Marketplace, you represent that the underlying regenerative
+            practices have been truthfully reported. Cultiv8 facilitates the connection between sellers and buyers but
+            does not guarantee the completion of any transaction. Pricing displayed on the Platform reflects market
+            estimates and may fluctuate.</p>
+
+        <h3>4.4 Revenue Sharing</h3>
+        <p>Cultiv8 charges a service fee of 15-20% on completed carbon credit transactions. The remaining revenue is
+            disbursed to the farmer or cooperative via mobile money (e.g., OPay, Paystack, Flutterwave) or bank
+            transfer, subject to applicable transaction fees from payment providers.</p>
+
+        <h2 id="s5">5. Post-Harvest Intelligence Services</h2>
+        <h3>5.1 Spoilage Predictions</h3>
+        <p>Spoilage predictions are generated using FAO-published post-harvest loss data combined with real-time weather
+            information from the Open-Meteo API. Predictions are estimates based on crop type, storage method,
+            temperature, and humidity. Actual spoilage may occur faster or slower than predicted due to factors not
+            captured by the model, including pest infestation, physical damage, or pre-existing contamination.</p>
+
+        <h3>5.2 Buyer Matching</h3>
+        <p>Cultiv8 connects farmers with registered buyers based on crop type, location, and urgency. We do not
+            guarantee that a buyer will be available, that a transaction will be completed, or that any specific price
+            will be offered. All transactions between farmers and buyers are conducted directly between those parties.
+        </p>
+
+        <h3>5.3 Weather Data</h3>
+        <p>Weather forecasts are sourced from the Open-Meteo API and NASA POWER, which aggregate data from multiple
+            meteorological services. While generally reliable, forecasts may contain inaccuracies, particularly for
+            hyperlocal conditions. Cultiv8 is not liable for decisions made based on weather forecasts provided
+            through the Platform.</p>
+
+        <h2 id="s6">6. User Responsibilities & Data Accuracy</h2>
+        <p>You agree to:</p>
+        <ul>
+            <li>Provide truthful and accurate information about your farm, practices, and stored produce.</li>
+            <li>Update your farm data when practices change (e.g., discontinuing no-till farming).</li>
+            <li>Not misrepresent the size, location, or practices of your farm for the purpose of inflating carbon
+                credit estimates.</li>
+            <li>Not create multiple accounts to circumvent Platform rules or aggregate limits.</li>
+            <li>Comply with all applicable Nigerian laws and regulations, including the National Environmental Standards
+                and Regulations Enforcement Agency (NESREA) Act.</li>
+        </ul>
+
+        <div class="highlight-box">
+            <p>Fraudulent reporting of farm data or regenerative practices constitutes a material breach of these Terms
+                and may result in immediate account termination, forfeiture of pending earnings, and referral to
+                relevant authorities.</p>
+        </div>
+
+        <h2 id="s7">7. Intellectual Property</h2>
+        <p>All content on the Platform — including the Cultiv8 name, logo, carbon estimation models, spoilage
+            algorithms, software code, UI design, and documentation — is the exclusive property of Cultiv8
+            Technologies Limited and is protected by Nigerian copyright law and international intellectual property
+            treaties.</p>
+        <p>You retain ownership of all Farm Data you submit. By submitting Farm Data, you grant Cultiv8 a
+            non-exclusive, worldwide, royalty-free license to use, process, and analyze this data for the purpose of
+            providing Platform services, improving our models, and generating aggregated, anonymized insights for
+            research and reporting purposes.</p>
+
+        <h2 id="s8">8. Disclaimers & Limitation of Liability</h2>
+        <h3>8.1 No Guarantees</h3>
+        <p>Cultiv8 provides all services on an <strong>"AS IS" and "AS AVAILABLE"</strong> basis. We make no
+            warranties, express or implied, regarding the accuracy of carbon estimates, the reliability of spoilage
+            predictions, the availability of buyers, or the uptime of the Platform.</p>
+
+        <h3>8.2 Limitation of Liability</h3>
+        <p>To the maximum extent permitted by Nigerian law, Cultiv8, its directors, employees, and affiliates shall
+            not be liable for:</p>
+        <ul>
+            <li>Any loss or damage arising from reliance on carbon sequestration estimates.</li>
+            <li>Crop spoilage or post-harvest losses, regardless of whether the Platform provided a prediction.</li>
+            <li>Failed or delayed transactions on the Marketplace.</li>
+            <li>Errors or inaccuracies in weather data or satellite imagery.</li>
+            <li>Any indirect, incidental, consequential, or punitive damages.</li>
+        </ul>
+        <p>Our total aggregate liability for any claim shall not exceed the total fees paid by you to Cultiv8 in the
+            12 months preceding the claim.</p>
+
+        <h3>8.3 Force Majeure</h3>
+        <p>Cultiv8 shall not be liable for any failure to perform due to circumstances beyond our reasonable control,
+            including natural disasters, satellite service interruptions, API provider outages, government actions, or
+            internet infrastructure failures.</p>
+
+        <h2 id="s9">9. Payment & Transaction Terms</h2>
+        <p>Payments for carbon credit sales are processed through third-party payment providers (Paystack, Flutterwave,
+            OPay). Cultiv8 does not store your payment credentials. All disbursements are subject to the payment
+            provider's terms, processing times, and transaction fees.</p>
+        <p>Earnings from carbon credit sales will typically be disbursed within 7-14 business days of a completed
+            transaction. Cultiv8 reserves the right to withhold payment if there is a suspected breach of these Terms
+            or if additional verification is required.</p>
+
+        <h2 id="s10">10. Termination</h2>
+        <p>You may deactivate your account at any time by contacting our support team. Upon termination, any pending
+            carbon credit listings will be removed, and any outstanding earnings will be disbursed within 30 days,
+            subject to verification.</p>
+        <p>Cultiv8 reserves the right to suspend or terminate your account if you violate these Terms, provide
+            fraudulent data, engage in abusive behavior toward other users or our team, or fail to comply with
+            verification requirements.</p>
+
+        <h2 id="s11">11. Dispute Resolution</h2>
+        <p>Any dispute arising from these Terms or your use of the Platform shall first be subject to good-faith
+            negotiation between the parties for a period of 30 days. If the dispute remains unresolved, it shall be
+            submitted to binding arbitration under the Arbitration and Conciliation Act (Cap A18, Laws of the Federation
+            of Nigeria 2004), with arbitration proceedings held in Lagos, Nigeria.</p>
+        <p>Nothing in this clause prevents either party from seeking injunctive relief in a court of competent
+            jurisdiction in Nigeria.</p>
+
+        <h2 id="s12">12. Changes to These Terms</h2>
+        <p>Cultiv8 reserves the right to update these Terms at any time. When we make material changes, we will notify
+            you via email, in-app notification, or SMS at least 14 days before the changes take effect. Your continued
+            use of the Platform after the effective date constitutes acceptance of the updated Terms.</p>
+
+        <h2 id="s13">13. Contact Information</h2>
+        <p>If you have questions about these Terms of Service, please contact us:</p>
+        <ul>
+            <li><strong>Email:</strong> legal@Cultiv8.ng</li>
+            <li><strong>Phone:</strong> +234 (0) 812 000 0000</li>
+            <li><strong>Address:</strong> Cultiv8 Technologies Limited, Innovation Hub, University of Ibadan, Oyo
+                State, Nigeria</li>
+        </ul>
+
+    </div>
+
+    <div class="footer-legal">
+        <p>© 2026 Cultiv8 Technologies Limited. All rights reserved. <a href="privacy.html">Privacy Policy</a> · <a
+                href="terms.html">Terms of Service</a></p>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultiv8 — Carbon Credits & Post-Harvest Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Splash / Loading -->
+    <div id="splash" class="splash">
+        <div class="splash-content">
+            <div class="splash-icon">
+                <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                    <path d="M32 4C18 4 8 18 12 32C16 46 28 56 32 60C36 56 48 46 52 32C56 18 46 4 32 4Z" fill="#2D6A4F"
+                        opacity="0.3" />
+                    <path d="M32 8C22 8 14 20 17 30C20 40 29 48 32 52C35 48 44 40 47 30C50 20 42 8 32 8Z"
+                        fill="#40916C" />
+                    <path d="M32 20V44M24 28L32 20L40 28" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+            <h1 class="splash-title">Cultiv8</h1>
+            <p class="splash-sub">Carbon Credits & Post-Harvest Intelligence</p>
+            <div class="splash-loader">
+                <div class="splash-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Screen -->
+    <div id="authScreen" class="auth-screen hidden">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <svg width="40" height="40" viewBox="0 0 64 64" fill="none">
+                        <path d="M32 8C22 8 14 20 17 30C20 40 29 48 32 52C35 48 44 40 47 30C50 20 42 8 32 8Z"
+                            fill="#40916C" />
+                        <path d="M32 20V44M24 28L32 20L40 28" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <h1 class="auth-title">Cultiv8</h1>
+                    <p class="auth-subtitle">Carbon Credits & Post-Harvest Intelligence</p>
+                </div>
+
+                <!-- Auth Tabs -->
+                <div class="auth-tabs">
+                    <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">Sign In</button>
+                    <button class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">Create Account</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
+                    <div class="auth-form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <div class="auth-input-wrapper">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="2" y="4" width="20" height="16" rx="2" />
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                            </svg>
+                            <input type="email" id="loginEmail" placeholder="you@example.com" required
+                                autocomplete="email">
+                        </div>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="auth-input-wrapper">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <input type="password" id="loginPassword" placeholder="Enter your password" required
+                                minlength="6" autocomplete="current-password">
+                            <button type="button" class="password-toggle"
+                                onclick="togglePasswordVisibility('loginPassword', this)"
+                                aria-label="Toggle password visibility">
+                                <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" style="display:none">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="auth-btn-primary" id="loginBtn">
+                        <span class="auth-btn-text">Sign In</span>
+                        <div class="auth-btn-spinner hidden"></div>
+                    </button>
+                    <div id="loginError" class="auth-error hidden"></div>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="auth-form hidden" onsubmit="handleSignup(event)">
+                    <div class="auth-form-group">
+                        <label for="signupName">Full Name</label>
+                        <div class="auth-input-wrapper">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                            <input type="text" id="signupName" placeholder="e.g. Amina Okafor" required minlength="2"
+                                autocomplete="name">
+                        </div>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="signupLocation">Location</label>
+                        <div class="auth-input-wrapper">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <input type="text" id="signupLocation" placeholder="e.g. Oyo State, Nigeria" required
+                                autocomplete="address-level1">
+                        </div>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <div class="auth-input-wrapper">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="2" y="4" width="20" height="16" rx="2" />
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                            </svg>
+                            <input type="email" id="signupEmail" placeholder="you@example.com" required
+                                autocomplete="email">
+                        </div>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="signupPassword">Password</label>
+                        <div class="auth-input-wrapper">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <input type="password" id="signupPassword" placeholder="Min. 8 characters" required
+                                minlength="8" autocomplete="new-password">
+                            <button type="button" class="password-toggle"
+                                onclick="togglePasswordVisibility('signupPassword', this)"
+                                aria-label="Toggle password visibility">
+                                <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" style="display:none">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="strength-bars">
+                                <div class="strength-bar"></div>
+                                <div class="strength-bar"></div>
+                                <div class="strength-bar"></div>
+                                <div class="strength-bar"></div>
+                            </div>
+                            <span class="strength-text"></span>
+                        </div>
+                    </div>
+                    <div class="auth-form-group">
+                        <label for="signupConfirm">Confirm Password</label>
+                        <div class="auth-input-wrapper">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                            <input type="password" id="signupConfirm" placeholder="Confirm your password" required
+                                minlength="8" autocomplete="new-password">
+                        </div>
+                    </div>
+                    <button type="submit" class="auth-btn-primary" id="signupBtn">
+                        <span class="auth-btn-text">Create Account</span>
+                        <div class="auth-btn-spinner hidden"></div>
+                    </button>
+                    <div id="signupError" class="auth-error hidden"></div>
+                </form>
+
+                <!-- Divider -->
+                <div class="auth-divider">
+                    <span>or continue with</span>
+                </div>
+
+                <!-- Google Sign-In -->
+                <div id="googleBtnContainer" class="google-btn-container">
+                    <!-- Google's official button will be rendered here by GIS -->
+                    <div id="g_id_signin" class="g-signin-wrapper"></div>
+                    <!-- Fallback custom button (shown while GIS loads or if it fails) -->
+                    <div id="googleSignInBtn" class="google-signin-btn google-fallback-btn"
+                        onclick="handleGoogleSignIn()" style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path
+                                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
+                                fill="#4285F4" />
+                            <path
+                                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                fill="#34A853" />
+                            <path
+                                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                                fill="#FBBC05" />
+                            <path
+                                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                                fill="#EA4335" />
+                        </svg>
+                        <span>Sign in with Google</span>
+                    </div>
+                </div>
+
+                <p class="auth-footer-text">
+                    By continuing, you agree to Cultiv8's <a href="terms.html">Terms of Service</a> and <a
+                        href="privacy policy.html">Privacy Policy</a>.
+                </p>
+            </div>
+
+            <!-- Decorative background -->
+            <div class="auth-bg-pattern"></div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app hidden">
+        <!-- Mobile Hamburger Button -->
+        <button id="menuToggle" class="menu-toggle" aria-label="Open navigation menu">
+            <svg class="menu-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+            <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+        </button>
+
+        <!-- Sidebar Overlay (mobile) -->
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+                    <path d="M32 8C22 8 14 20 17 30C20 40 29 48 32 52C35 48 44 40 47 30C50 20 42 8 32 8Z"
+                        fill="#40916C" />
+                    <path d="M32 20V44M24 28L32 20L40 28" stroke="white" stroke-width="2.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <span>Cultiv8</span>
+            </div>
+
+            <div class="sidebar-section-label">OVERVIEW</div>
+            <button class="nav-btn active" data-page="dashboard">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                </svg>
+                Dashboard
+            </button>
+
+            <div class="sidebar-section-label">CARBON CREDITS</div>
+            <button class="nav-btn" data-page="farm-register">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                </svg>
+                Register Farm
+            </button>
+            <button class="nav-btn" data-page="carbon-track">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                </svg>
+                Carbon Tracking
+            </button>
+            <button class="nav-btn" data-page="marketplace">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="9" cy="21" r="1" />
+                    <circle cx="20" cy="21" r="1" />
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                </svg>
+                Credit Marketplace
+            </button>
+
+            <div class="sidebar-section-label">POST-HARVEST</div>
+            <button class="nav-btn" data-page="storage-log">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                </svg>
+                Storage Monitor
+            </button>
+            <button class="nav-btn" data-page="spoilage">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg>
+                Spoilage Predictor
+            </button>
+            <button class="nav-btn" data-page="buyer-match">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                </svg>
+                Buyer Matching
+            </button>
+
+            <div class="sidebar-bottom">
+                <div class="farmer-profile" id="profileTrigger" onclick="toggleProfileDropdown()">
+                    <div class="farmer-avatar" id="profileAvatar">?</div>
+                    <div class="profile-info-text">
+                        <div class="farmer-name" id="profileName">Not signed in</div>
+                        <div class="farmer-loc" id="profileLocation">—</div>
+                    </div>
+                    <svg class="profile-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                </div>
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown hidden" id="profileDropdown">
+                    <div class="profile-dropdown-header">
+                        <div class="farmer-avatar profile-dropdown-avatar" id="dropdownAvatar">?</div>
+                        <div>
+                            <div class="dropdown-user-name" id="dropdownName">—</div>
+                            <div class="dropdown-user-email" id="dropdownEmail">—</div>
+                        </div>
+                    </div>
+                    <div class="profile-dropdown-divider"></div>
+                    <button class="profile-dropdown-item" onclick="handleSignOut()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg>
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <section id="page-dashboard" class="page active">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Dashboard</h1>
+                        <p class="page-subtitle" id="dashboardGreeting">Welcome back. Here's your farm overview.</p>
+                    </div>
+                    <div class="header-date" id="currentDate"></div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card stat-carbon">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M2 22l10-10M16 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM2 22l.01-.01" />
+                                <path d="M12 8a8 8 0 0 0 8 8" />
+                            </svg>
+                        </div>
+                        <div class="stat-label">Carbon Sequestered</div>
+                        <div class="stat-value" id="totalCarbon">0.0</div>
+                        <div class="stat-unit">tonnes CO₂e this season</div>
+                        <div class="stat-trend up">↑ 12% vs last season</div>
+                    </div>
+                    <div class="stat-card stat-credits">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23" />
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                            </svg>
+                        </div>
+                        <div class="stat-label">Credits Earned</div>
+                        <div class="stat-value" id="totalCredits">0</div>
+                        <div class="stat-unit">verified carbon credits</div>
+                        <div class="stat-trend up">₦ <span id="creditValue">0</span> potential value</div>
+                    </div>
+                    <div class="stat-card stat-harvest">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                            </svg>
+                        </div>
+                        <div class="stat-label">Produce Stored</div>
+                        <div class="stat-value" id="totalStored">0</div>
+                        <div class="stat-unit">kg across all storage</div>
+                        <div class="stat-trend" id="storageTrend">No active storage</div>
+                    </div>
+                    <div class="stat-card stat-saved">
+                        <div class="stat-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                        </div>
+                        <div class="stat-label">Produce Saved</div>
+                        <div class="stat-value" id="totalSaved">0</div>
+                        <div class="stat-unit">kg saved from spoilage</div>
+                        <div class="stat-trend up">₦ <span id="savedValue">0</span> value preserved</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card map-card">
+                        <div class="card-header">
+                            <h3>Farm Locations</h3>
+                            <span class="badge green" id="farmCount">0 farms registered</span>
+                        </div>
+                        <div id="dashboardMap" class="map-container"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Active Alerts</h3>
+                            <span class="badge orange" id="alertCount">0 alerts</span>
+                        </div>
+                        <div id="alertsList" class="alerts-list">
+                            <div class="empty-state">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)"
+                                    stroke-width="1.5">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                                </svg>
+                                <p>No active alerts. Your produce is safe!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Recent Activity</h3>
+                    </div>
+                    <div id="activityFeed" class="activity-feed">
+                        <div class="empty-state">
+                            <p>No recent activity. Start by registering a farm or logging storage.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Register Farm Page -->
+            <section id="page-farm-register" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Register Farm</h1>
+                        <p class="page-subtitle">Add your farm location and details for carbon tracking.</p>
+                    </div>
+                </div>
+
+                <div class="form-layout">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Farm Details</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Farm Name</label>
+                            <input type="text" id="farmName" placeholder="e.g. Amina's Northern Plot" class="input">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Farm Size (hectares)</label>
+                                <input type="number" id="farmSize" placeholder="e.g. 2.5" step="0.1" class="input">
+                            </div>
+                            <div class="form-group">
+                                <label>Primary Crop</label>
+                                <select id="farmCrop" class="input">
+                                    <option value="">Select crop...</option>
+                                    <option value="maize">Maize</option>
+                                    <option value="rice">Rice</option>
+                                    <option value="cassava">Cassava</option>
+                                    <option value="yam">Yam</option>
+                                    <option value="sorghum">Sorghum</option>
+                                    <option value="millet">Millet</option>
+                                    <option value="cowpea">Cowpea</option>
+                                    <option value="groundnut">Groundnut</option>
+                                    <option value="cocoa">Cocoa</option>
+                                    <option value="vegetables">Mixed Vegetables</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="card-header" style="margin-top:24px">
+                            <h3>Regenerative Practices</h3>
+                        </div>
+                        <p class="form-hint">Select all sustainable practices you currently use. These determine your
+                            carbon sequestration potential.</p>
+                        <div class="practices-grid">
+                            <label class="practice-check">
+                                <input type="checkbox" value="cover_crops" class="practice-input">
+                                <div class="practice-card">
+                                    <span class="practice-icon">🌱</span>
+                                    <span class="practice-name">Cover Cropping</span>
+                                    <span class="practice-co2">+0.32 tCO₂/ha/yr</span>
+                                </div>
+                            </label>
+                            <label class="practice-check">
+                                <input type="checkbox" value="no_till" class="practice-input">
+                                <div class="practice-card">
+                                    <span class="practice-icon">🚜</span>
+                                    <span class="practice-name">No-Till Farming</span>
+                                    <span class="practice-co2">+0.54 tCO₂/ha/yr</span>
+                                </div>
+                            </label>
+                            <label class="practice-check">
+                                <input type="checkbox" value="composting" class="practice-input">
+                                <div class="practice-card">
+                                    <span class="practice-icon">♻️</span>
+                                    <span class="practice-name">Composting</span>
+                                    <span class="practice-co2">+0.28 tCO₂/ha/yr</span>
+                                </div>
+                            </label>
+                            <label class="practice-check">
+                                <input type="checkbox" value="agroforestry" class="practice-input">
+                                <div class="practice-card">
+                                    <span class="practice-icon">🌳</span>
+                                    <span class="practice-name">Agroforestry</span>
+                                    <span class="practice-co2">+1.20 tCO₂/ha/yr</span>
+                                </div>
+                            </label>
+                            <label class="practice-check">
+                                <input type="checkbox" value="crop_rotation" class="practice-input">
+                                <div class="practice-card">
+                                    <span class="practice-icon">🔄</span>
+                                    <span class="practice-name">Crop Rotation</span>
+                                    <span class="practice-co2">+0.18 tCO₂/ha/yr</span>
+                                </div>
+                            </label>
+                            <label class="practice-check">
+                                <input type="checkbox" value="mulching" class="practice-input">
+                                <div class="practice-card">
+                                    <span class="practice-icon">🍂</span>
+                                    <span class="practice-name">Mulching</span>
+                                    <span class="practice-co2">+0.22 tCO₂/ha/yr</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Farm Location</h3>
+                        </div>
+                        <p class="form-hint">Click on the map to mark your farm location, or enter coordinates manually.
+                        </p>
+                        <div id="registerMap" class="map-container" style="height:320px"></div>
+                        <div class="form-row" style="margin-top:16px">
+                            <div class="form-group">
+                                <label>Latitude</label>
+                                <input type="number" id="farmLat" placeholder="e.g. 7.3775" step="0.0001" class="input">
+                            </div>
+                            <div class="form-group">
+                                <label>Longitude</label>
+                                <input type="number" id="farmLng" placeholder="e.g. 3.9470" step="0.0001" class="input">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="registerFarm()" style="margin-top:16px">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 5v14M5 12h14" />
+                            </svg>
+                            Register Farm
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Registered Farms List -->
+                <div class="card" style="margin-top:24px">
+                    <div class="card-header">
+                        <h3>Registered Farms</h3>
+                    </div>
+                    <div id="farmsList" class="farms-list">
+                        <div class="empty-state">
+                            <p>No farms registered yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Carbon Tracking Page -->
+            <section id="page-carbon-track" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Carbon Tracking</h1>
+                        <p class="page-subtitle">Monitor your carbon sequestration and NDVI vegetation health.</p>
+                    </div>
+                </div>
+
+                <div id="carbonNoFarms" class="card">
+                    <div class="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)"
+                            stroke-width="1.5">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                        </svg>
+                        <p>Register a farm first to start carbon tracking.</p>
+                        <button class="btn btn-secondary" onclick="navigateTo('farm-register')">Register Farm</button>
+                    </div>
+                </div>
+
+                <div id="carbonContent" class="hidden">
+                    <div class="form-group" style="max-width:320px;margin-bottom:24px">
+                        <label>Select Farm</label>
+                        <select id="carbonFarmSelect" class="input" onchange="updateCarbonView()"></select>
+                    </div>
+
+                    <div class="stats-grid cols-3">
+                        <div class="stat-card">
+                            <div class="stat-label">NDVI Score</div>
+                            <div class="stat-value" id="ndviScore">—</div>
+                            <div class="stat-unit">Vegetation Health Index</div>
+                            <div class="ndvi-bar-container">
+                                <div class="ndvi-bar" id="ndviBar"></div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Soil Organic Carbon</div>
+                            <div class="stat-value" id="socValue">—</div>
+                            <div class="stat-unit">g/kg (estimated from SoilGrids)</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Season Sequestration</div>
+                            <div class="stat-value" id="seqValue">—</div>
+                            <div class="stat-unit">tonnes CO₂e</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Carbon Sequestration Breakdown</h3>
+                            </div>
+                            <div id="carbonBreakdown" class="breakdown-list"></div>
+                            <div class="carbon-total-bar" id="carbonTotalBar"></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>NDVI Vegetation Timeline</h3>
+                            </div>
+                            <div class="ndvi-timeline" id="ndviTimeline"></div>
+                            <p class="form-hint" style="margin-top:12px">Simulated NDVI data based on typical crop
+                                growth cycles for your region. In production, this pulls from Sentinel-2 satellite
+                                imagery via Google Earth Engine.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Verification Status</h3>
+                        </div>
+                        <div class="verification-steps">
+                            <div class="v-step done">
+                                <div class="v-step-icon">✓</div>
+                                <div>
+                                    <div class="v-step-title">Farm Registered</div>
+                                    <div class="v-step-desc">Location and practices verified</div>
+                                </div>
+                            </div>
+                            <div class="v-step done">
+                                <div class="v-step-icon">✓</div>
+                                <div>
+                                    <div class="v-step-title">Satellite Verified</div>
+                                    <div class="v-step-desc">NDVI confirms active vegetation</div>
+                                </div>
+                            </div>
+                            <div class="v-step active">
+                                <div class="v-step-icon">◉</div>
+                                <div>
+                                    <div class="v-step-title">Carbon Estimated</div>
+                                    <div class="v-step-desc">IPCC methodology applied</div>
+                                </div>
+                            </div>
+                            <div class="v-step">
+                                <div class="v-step-icon">○</div>
+                                <div>
+                                    <div class="v-step-title">Credits Minted</div>
+                                    <div class="v-step-desc">Pending marketplace listing</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Marketplace Page -->
+            <section id="page-marketplace" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Credit Marketplace</h1>
+                        <p class="page-subtitle">Trade your verified carbon credits with corporate buyers.</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid cols-3">
+                    <div class="stat-card">
+                        <div class="stat-label">Available Credits</div>
+                        <div class="stat-value" id="mkCredits">0</div>
+                        <div class="stat-unit">verified tCO₂e</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Current Price</div>
+                        <div class="stat-value">$12.40</div>
+                        <div class="stat-unit">per tCO₂e (Verra avg)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Potential Revenue</div>
+                        <div class="stat-value" id="mkRevenue">₦0</div>
+                        <div class="stat-unit">at current rates</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Active Buyers</h3>
+                    </div>
+                    <div class="buyers-grid">
+                        <div class="buyer-card">
+                            <div class="buyer-logo" style="background:#0078d4">M</div>
+                            <div class="buyer-info">
+                                <div class="buyer-name">GreenCorp International</div>
+                                <div class="buyer-detail">Buying: 500 tCO₂e • $13.20/credit</div>
+                                <div class="buyer-detail">Standard: Verra VCS • Verified</div>
+                            </div>
+                            <button class="btn btn-primary btn-sm"
+                                onclick="showToast('Offer submitted! You will be notified when matched.')">Sell
+                                Credits</button>
+                        </div>
+                        <div class="buyer-card">
+                            <div class="buyer-logo" style="background:#e74c3c">N</div>
+                            <div class="buyer-info">
+                                <div class="buyer-name">Nestlé Sustainability Fund</div>
+                                <div class="buyer-detail">Buying: 1,200 tCO₂e • $11.80/credit</div>
+                                <div class="buyer-detail">Standard: Gold Standard • Verified</div>
+                            </div>
+                            <button class="btn btn-primary btn-sm"
+                                onclick="showToast('Offer submitted! You will be notified when matched.')">Sell
+                                Credits</button>
+                        </div>
+                        <div class="buyer-card">
+                            <div class="buyer-logo" style="background:#2ecc71">T</div>
+                            <div class="buyer-info">
+                                <div class="buyer-name">TotalEnergies Carbon Offset</div>
+                                <div class="buyer-detail">Buying: 800 tCO₂e • $12.90/credit</div>
+                                <div class="buyer-detail">Standard: Verra VCS • Verified</div>
+                            </div>
+                            <button class="btn btn-primary btn-sm"
+                                onclick="showToast('Offer submitted! You will be notified when matched.')">Sell
+                                Credits</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Transaction History</h3>
+                    </div>
+                    <div id="transactionHistory">
+                        <div class="empty-state">
+                            <p>No transactions yet. List your credits to start earning.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Storage Monitor Page -->
+            <section id="page-storage-log" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Storage Monitor</h1>
+                        <p class="page-subtitle">Log your stored produce and track conditions in real-time.</p>
+                    </div>
+                </div>
+
+                <div class="form-layout">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Log New Storage</h3>
+                        </div>
+                        <div class="form-group">
+                            <label>Crop Type</label>
+                            <select id="storageCrop" class="input">
+                                <option value="">Select crop...</option>
+                                <option value="tomatoes">Tomatoes</option>
+                                <option value="maize">Maize (Corn)</option>
+                                <option value="rice">Rice</option>
+                                <option value="cassava">Cassava</option>
+                                <option value="yam">Yam</option>
+                                <option value="peppers">Peppers</option>
+                                <option value="onions">Onions</option>
+                                <option value="beans">Beans</option>
+                                <option value="plantain">Plantain</option>
+                                <option value="oranges">Oranges</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Quantity (kg)</label>
+                                <input type="number" id="storageQty" placeholder="e.g. 500" class="input">
+                            </div>
+                            <div class="form-group">
+                                <label>Storage Method</label>
+                                <select id="storageMethod" class="input">
+                                    <option value="open_air">Open Air</option>
+                                    <option value="covered_room">Covered Room</option>
+                                    <option value="hermetic_bag">Hermetic Bags</option>
+                                    <option value="traditional_silo">Traditional Silo</option>
+                                    <option value="cold_storage">Cold Storage</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Storage Location</label>
+                            <div class="form-row">
+                                <input type="number" id="storageLat" placeholder="Latitude" step="0.0001" class="input">
+                                <input type="number" id="storageLng" placeholder="Longitude" step="0.0001"
+                                    class="input">
+                            </div>
+                            <button class="btn btn-secondary btn-sm" onclick="useCurrentLocation()"
+                                style="margin-top:8px">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <circle cx="12" cy="12" r="3" />
+                                    <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
+                                </svg>
+                                Use My Location
+                            </button>
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="logStorage()" style="margin-top:8px">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 5v14M5 12h14" />
+                            </svg>
+                            Log Storage
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Current Weather</h3>
+                        </div>
+                        <div id="weatherDisplay" class="weather-display">
+                            <div class="empty-state">
+                                <p>Enter a storage location to see current weather conditions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top:24px">
+                    <div class="card-header">
+                        <h3>Active Storage</h3>
+                    </div>
+                    <div id="storageList" class="storage-list">
+                        <div class="empty-state">
+                            <p>No produce currently logged in storage.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Spoilage Predictor Page -->
+            <section id="page-spoilage" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Spoilage Predictor</h1>
+                        <p class="page-subtitle">AI-powered predictions for how long your produce will last.</p>
+                    </div>
+                </div>
+
+                <div id="spoilageNoStorage" class="card">
+                    <div class="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        <p>Log some produce in Storage Monitor first.</p>
+                        <button class="btn btn-secondary" onclick="navigateTo('storage-log')">Go to Storage
+                            Monitor</button>
+                    </div>
+                </div>
+
+                <div id="spoilageContent" class="hidden">
+                    <div id="spoilageCards" class="spoilage-grid"></div>
+                </div>
+            </section>
+
+            <!-- Buyer Matching Page -->
+            <section id="page-buyer-match" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Buyer Matching</h1>
+                        <p class="page-subtitle">Connect with nearby buyers before your produce spoils.</p>
+                    </div>
+                </div>
+
+                <div id="buyerNoStorage" class="card">
+                    <div class="empty-state">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)"
+                            stroke-width="1.5">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                        </svg>
+                        <p>Log produce in Storage Monitor to find matching buyers.</p>
+                        <button class="btn btn-secondary" onclick="navigateTo('storage-log')">Go to Storage
+                            Monitor</button>
+                    </div>
+                </div>
+
+                <div id="buyerContent" class="hidden">
+                    <div id="buyerMap" class="map-container" style="height:350px;border-radius:12px;margin-bottom:24px">
+                    </div>
+                    <div id="buyerCards" class="buyers-grid"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <div class="toast-content">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+            <span id="toastMsg"></span>
+        </div>
+    </div>
+
+    <script src="api-bridge.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

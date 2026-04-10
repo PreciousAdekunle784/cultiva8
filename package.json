@@ -1,0 +1,22 @@
+{
+  "name": "cultiv8-backend",
+  "version": "1.0.0",
+  "description": "Cultiv8 API — Carbon Credits & Post-Harvest Intelligence",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "sql.js": "^1.14.1",
+    "uuid": "^13.0.0"
+  }
+}
